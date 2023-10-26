@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="shape" style="height: 13em; width: 13em; right: -6.5em; top: 1.8em;"></div>
+        <div class="shape" style="height: 11em; width: 11em; bottom: -3.7em;left: 2.5em;"></div>
+        <div class="container">
+            <div class="search-container">
+                <input id="input_name" type="text" placeholder="Enter a city name" id="city">
+                <button onclick="search()" id="search-button">Search</button>
+            </div>
+            <div id="result"></div>
+        </div>
+    </div>
+</body>
+<script>
+    const search= async()=>{
+        let cityname=input_name.value
+        console.log(cityname);
+        if(cityname)
+        {
+            let response= await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=dc13c691e8096404014ff606a1f5b1bf`)
+            response.json().then((data)=>{console.log(data);
+            let cname=data.name
+            console.log(cname);
+            let cicon=data.weather[0].icon;
+            console.log(cicon);
+            let cmain=data.weather[0].main;
+            console.log(cmain);
+            let cdes=data.weather[0].description;
+            console.log(cdes);
+            let ctemp=data.main.temp
+            console.log(ctemp);
+            let tempmin=data.main.temp_min;
+            console.log(tempmin);
+            let tempmax=data.main.temp_max;
+            console.log(tempmax);
+            let prsr=data.main.pressure;
+            console.log(prsr);
+            let humid=data.main.humidity;
+            console.log(humid);
+            result.innerHTML=`<h2>${cname}</h2>
+            <h4 class="weather">${data.weather[0].main}</h4>
+            <h4 class="des">${cdes}</h4>
+            <img src="https://openweathermap.org/img/w/${cicon}.png">
+            <h1>${ctemp}</h1>
+            <div class='temp-container'>
+                <div>
+                <h4 class='title'>min</h4>
+                <h4 class='temp'>${tempmin}</h4>
+                </div>
+                <div>
+                <h4 class='title'>max</h4>
+                <h4 class='temp'>${tempmax}</h4>
+                </div>
+            </div>
+            <h3>pressure-${prsr}</h3>
+            <h3>humidity-${humid}</h3>`
+            })
+            
+        }
+        else
+        {
+            alert('Enter a valid input')
+        }
+       
+        }
+</script>
+</html>
